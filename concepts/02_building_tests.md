@@ -16,7 +16,7 @@ not_null: Ensures no nulls are present.
 accepted_values: Restricts a column to specific expected values.
 relationships: Ensures referential integrity between models (foreign key points to valid primary key).
 
-2)Singular Tests
+2) Singular Tests
 Written as custom SQL files.
 Designed for specific, one-off data validations.
 Fail when the SQL query returns one or more rows (representing violations).
