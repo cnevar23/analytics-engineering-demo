@@ -1,0 +1,52 @@
+Understanding Deployment
+
+Development vs. Deployment Environments
+
+Development in dbt is the process of building, editing, and testing models in a non-production environment. This typically happens:
+In a developer’s personal schema (e.g., dbt_cesar)
+On a feature or custom branch (e.g., feature/add-users-model)
+Using the dbt IDE or CLI interactively
+
+Deployment is when dbt is executed on a schedule in a controlled environment:
+Usually runs on the main or master branch
+Targets a production schema (e.g., dbt_prod)
+Used to power reports, dashboards, and production datasets
+
+Having separate development and deployment environments allows teams to build and test safely without impacting production workflows.
+
+Configuring Deployment in dbt Cloud
+Deployment environments are created on the Environments page of dbt Cloud. Configuration includes:
+General Settings: Choose the dbt version and optionally specify a branch.
+Data Warehouse Connection: Connect to the warehouse used for production.
+Deployment Credentials: Use a service account specifically for production runs. It should not be a personal account.
+Schema: The production schema must differ from development schemas.
+
+To mark an environment as a production environment, select the production environment option within the deployment settings.
+
+Scheduling and Running Jobs
+A job in dbt Cloud is a scheduled execution of dbt commands in a deployment environment. You configure jobs on the Jobs page by:
+Selecting a deployment environment
+Defining the command sequence (e.g., dbt run, dbt test)
+Setting a trigger or schedule (e.g., hourly, daily)
+
+Jobs can also be run manually using the Run Now button.
+Jobs run at whatever cadence you configure—not at a fixed time unless explicitly scheduled.
+
+dbt Cloud Job Behavior
+Jobs execute commands such as dbt run, dbt test, and dbt seed.
+If any test (like dbt test --select source:*) fails, dbt Cloud will stop and not execute any further commands in the job sequence.
+This ensures data integrity before building or promoting models to production.
+
+Production Best Practices
+Use a different schema for production than for development.
+Keep deployment credentials separate from user accounts.
+Production jobs should execute from a trusted branch (main, master).
+Always run both dbt run and dbt test in production to ensure correctness.
+
+Job Review and Monitoring
+After a job runs, dbt Cloud allows you to:
+Review logs for each command step
+See test and freshness results
+View generated documentation if dbt docs generate was included
+
+This visibility supports debugging and continuous improvement in production workflows.
