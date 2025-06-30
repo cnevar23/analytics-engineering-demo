@@ -1,0 +1,52 @@
+Purpose of Documentation
+Documentation helps analytics teams work more effectively by:
+Enabling self-service for users with data questions
+Helping new team members onboard quickly
+Reducing dependency on tribal knowledge
+
+To be most useful, documentation should be written as close to the code as possible and integrated into the development workflow.
+
+Where Documentation Lives in dbt
+Models are defined in .sql files.
+Descriptions and metadata for those models are written in .yml files in the same folder or subfolder.
+Documentation can be added at three levels: model, source, and column.
+
+models:
+  - name: orders
+    description: "This model cleans and transforms order data."
+    columns:
+      - name: order_id
+        description: "The primary key for the orders table."
+
+Doc Blocks for Reuse
+Use doc blocks to create reusable descriptions across models or columns that share meaning.
+Doc blocks are written in .md files and referenced in .yml files.
+
+description: "{{ doc('user_id') }}"
+
+{% docs user_id %}
+The unique identifier for a user in the system.
+{% enddocs %}
+
+Writing Single-line and Multi-line Descriptions
+Both single-line and multi-line descriptions are written in .yml files.
+Multi-line descriptions can be written using the pipe symbol (|) to preserve formatting.
+
+Generating and Viewing Documentation
+To generate the documentation:
+dbt docs generate
+
+To view it locally:
+dbt docs serve
+
+This process creates a browsable documentation site that includes:
+The lineage graph
+Descriptions for models, sources, and columns
+Test coverage
+The SQL code behind each model
+
+Using the Lineage Graph
+The lineage graph provides a visual representation of how data flows between models. It helps with:
+Understanding upstream and downstream dependencies
+Narrowing the scope of what you're viewing using the selector tool
+Gaining insight into how models are connected
