@@ -1,2 +1,1 @@
-# analytics-engineering-demo
-dbt Fundamentals
+#dbt Fundamentals
