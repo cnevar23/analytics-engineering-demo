@@ -1,0 +1,57 @@
+-- SQL for dbt: Starter Guide
+-- Purpose: Learn and apply beginner SQL functions commonly used in dbt models
+
+-- 1. Basic String Cleaning
+SELECT
+    customer_id,
+    UPPER(TRIM(first_name)) AS first_name_clean,
+    LOWER(TRIM(email)) AS email_clean
+FROM {{ source('raw', 'customers') }}
+WHERE email LIKE '%@%';
+
+-- 2. Handling Nulls
+SELECT
+    customer_id,
+    COALESCE(phone_number, 'Not Provided') AS phone_number
+FROM {{ ref('stg_customers') }};
+
+-- 3. Date Manipulation
+SELECT
+    order_id,
+    order_date,
+    EXTRACT(YEAR FROM order_date) AS order_year,
+    DATE_DIFF(CURRENT_DATE(), order_date, DAY) AS days_since_order
+FROM {{ ref('stg_orders') }}
+WHERE order_date IS NOT NULL;
+
+-- 4. Type Conversion
+SELECT
+    customer_id,
+    SAFE_CAST(total_spent AS FLOAT64) AS total_spent_float
+FROM {{ ref('stg_customers') }}
+WHERE SAFE_CAST(total_spent AS FLOAT64) IS NOT NULL;
+
+-- 5. Case Logic (Category Mapping)
+SELECT
+    order_id,
+    status,
+    CASE
+        WHEN status = 'C' THEN 'Complete'
+        WHEN status = 'P' THEN 'Pending'
+        ELSE 'Other'
+    END AS status_label
+FROM {{ ref('stg_orders') }};
+
+-- 6. Finding Duplicates
+SELECT
+    email,
+    COUNT(*) AS duplicate_count
+FROM {{ ref('stg_customers') }}
+GROUP BY email
+HAVING COUNT(*) > 1;
+
+-- 7. Combining Strings
+SELECT
+    customer_id,
+    CONCAT(first_name, ' ', last_name) AS full_name
+FROM {{ ref('stg_customers') }};
