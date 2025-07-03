@@ -1,5 +1,5 @@
 -- SQL for dbt: Starter Guide
--- Purpose: Learn and apply beginner SQL functions commonly used in dbt models
+-- Purpose: Learn and apply SQL functions commonly used in dbt models
 
 -- 1. Basic String Cleaning
 SELECT
